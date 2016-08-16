@@ -1,26 +1,28 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <errno.h>
 
-void printUsage(FILE *file) {
-    fputs("Usage: count [token] [file]", file);
-}
+#define PRINTUSAGE(file) fprintf(file, "Usage: %s [token] [file]\n", argv[0]);
+
+#define PRINTERROR() printf("%s: %s: %s\n", argv[0], filename, strerror(errno));
+
 int main(int argc, const char *argv[]) {
     if (argc == 1) {
-        printUsage(stderr);
+        PRINTUSAGE(stderr);
         return EXIT_FAILURE;
     } else if (strcmp(argv[1], "-h") || strcmp(argv[1], "--help")){
-        printUsage(stdout);
+        PRINTUSAGE(stdout);
         return EXIT_SUCCESS;
     } else if (argc != 3) {
-        printUsage(stderr);
+        PRINTUSAGE(stderr);
         return EXIT_FAILURE;
     }
     const char *token = argv[1];
     const char *filename = argv[2];
     FILE *file;
     if (!(file = fopen(filename, "rb"))) {
-        fputs(strcat("Could not open file: ", filename), stderr);
+        PRINTERROR();
         return EXIT_FAILURE;
     }
 
@@ -42,8 +44,7 @@ int main(int argc, const char *argv[]) {
         }
     }
 
-
     fclose(file);
-    printf("%i", count);
+    printf("%i\n", count);
     return EXIT_SUCCESS;
 }
