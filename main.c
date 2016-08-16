@@ -11,9 +11,6 @@ int main(int argc, const char *argv[]) {
     if (argc == 1) {
         PRINTUSAGE(stderr);
         return EXIT_FAILURE;
-    } else if (strcmp(argv[1], "-h") || strcmp(argv[1], "--help")){
-        PRINTUSAGE(stdout);
-        return EXIT_SUCCESS;
     } else if (argc != 3) {
         PRINTUSAGE(stderr);
         return EXIT_FAILURE;
